@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    /* Utility class to hide sections */
+    .section-hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="h-screen bg-gray-100 font-sans overflow-hidden flex">
+
+<aside class="w-64 bg-slate-800 text-white flex-col hidden md:flex shrink-0">
+  <div class="h-16 flex items-center px-6 border-b border-slate-700 bg-slate-900">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">C</div>
+      <div class="flex flex-col">
+        <span class="font-bold text-sm tracking-wide">BRgy Sanchez</span>
+        <span class="text-[10px] text-slate-400 uppercase tracking-wider">Management System</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="flex-1 py-6 px-3 space-y-1">
+    <a href="#" onclick="showSection('home')" id="nav-home" class="nav-item w-full flex items-center px-3 py-2.5 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-colors group">
+      <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"></i>
+      <span class="text-sm font-medium">Dashboard</span>
+    </a>
+
+    <a href="#" onclick="showSection('announcements')" id="nav-announcements" class="nav-item w-full flex items-center px-3 py-2.5 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-colors group">
+      <i data-lucide="megaphone" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"></i>
+      <span class="text-sm font-medium">Announcements</span>
+    </a>
+
+    <a href="#" onclick="showSection('calendar')" id="nav-calendar" class="nav-item w-full flex items-center px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md shadow-blue-900/20 group">
+      <i data-lucide="calendar" class="w-5 h-5 mr-3"></i>
+      <span class="text-sm font-medium">Calendar</span>
+    </a>
+  </nav>
+
+  <div class="p-4 border-t border-slate-700">
+    <div class="text-xs text-slate-500 text-center">© gawa ni ryan itong part na to</div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col min-w-0 h-full">
+
+  <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 md:px-8 shrink-0 z-10">
+    <div class="flex items-center gap-4">
+      <button class="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+      <h1 id="page-header-title" class="text-xl font-semibold text-gray-800">Calendar</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-full transition-colors relative">
+        <i data-lucide="bell" class="w-5 h-5"></i>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+      </button>
+      <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
+        <div class="text-right hidden sm:block">
+          <div class="text-sm font-medium text-gray-900">Admin User</div>
+          <div class="text-xs text-gray-500">Administrator</div>
+        </div>
+        <div class="w-9 h-9 rounded-full bg-gray-200 overflow-hidden border border-gray-300">
+          <i data-lucide="user" class="w-full h-full p-1.5 text-gray-500"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col overflow-hidden bg-gray-50 p-4 md:p-6 lg:p-8">
+
+    <div class="w-full mb-4 shrink-0 text-sm">
+      <span class="text-blue-500 font-medium">Home</span>
+      <span class="mx-2 text-gray-400">/</span>
+      <span id="breadcrumb-current" class="text-gray-600">Calendar</span>
+    </div>
+
+    <div id="section-calendar" class="view-section flex flex-col lg:flex-row w-full flex-1 h-full min-h-0 overflow-hidden gap-6">
+
+      <div id="calendar-container" class="flex-1 w-full bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden transition-all duration-500">
+        <div class="bg-blue-500 p-4 shrink-0 flex items-center justify-between text-white">
+          <button onclick="changeMonth(-1)" class="p-1.5 hover:bg-blue-600 rounded-lg transition-colors">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <h2 id="month-year-display" class="text-lg font-semibold tracking-wide">
+            December 2025
+          </h2>
+          <button onclick="changeMonth(1)" class="p-1.5 hover:bg-blue-600 rounded-lg transition-colors">
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-7 border-b border-gray-100 bg-gray-50 shrink-0">
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Sun</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Mon</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Tue</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Wed</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Thu</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Fri</div>
+          <div class="py-3 text-center text-xs font-semibold text-gray-400 uppercase tracking-wider">Sat</div>
+        </div>
+
+        <div id="calendar-grid" class="flex-1 grid grid-cols-7 bg-gray-100 gap-px border-b border-gray-200 overflow-hidden">
+        </div>
+
+        <div class="p-4 bg-white border-t border-gray-100 shrink-0">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Event Legend</h3>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span class="text-sm text-gray-600">Community Meeting</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              <span class="text-sm text-gray-600">Health Drive</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <span class="text-sm text-gray-600">Holiday</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="event-sidebar-container" class="bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col shrink-0 overflow-hidden hidden lg:flex lg:w-0 lg:opacity-0 lg:border-0 h-full transition-all duration-500">
+        <div class="min-w-[20rem] w-full lg:w-80 h-full flex flex-col">
+          <div class="bg-green-500 p-5 flex justify-between items-center text-white shrink-0">
+            <h3 class="font-semibold text-lg">Add Event</h3>
+            <button onclick="closeSidebar()" class="hover:bg-green-600 p-1.5 rounded transition-colors">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+          <div class="p-6 flex flex-col gap-6 flex-1 overflow-y-auto">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Selected Date</label>
+              <div id="sidebar-date-display" class="w-full p-3 bg-gray-50 text-gray-700 rounded-lg text-sm border border-gray-200 font-medium">-</div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Event Title</label>
+              <label for="event-title-input"></label><input type="text" id="event-title-input" placeholder="Enter event title" class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm transition-shadow"/>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Event Color</label>
+              <div class="flex gap-3" id="color-picker-container">
+                <button onclick="selectColor('blue')" class="color-btn w-9 h-9 rounded-lg bg-blue-500 ring-offset-2 focus:outline-none transition-all hover:scale-105 ring-2 ring-gray-400 scale-105 shadow-sm" data-color="blue"></button>
+                <button onclick="selectColor('green')" class="color-btn w-9 h-9 rounded-lg bg-green-500 ring-offset-2 focus:outline-none transition-all hover:scale-105 ring-transparent shadow-sm" data-color="green"></button>
+                <button onclick="selectColor('red')" class="color-btn w-9 h-9 rounded-lg bg-red-500 ring-offset-2 focus:outline-none transition-all hover:scale-105 ring-transparent shadow-sm" data-color="red"></button>
+              </div>
+            </div>
+            <button onclick="addEvent()" class="w-full py-3.5 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg transition-all shadow-md mt-auto active:transform active:scale-[0.98]">Add Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-announcements" class="view-section section-hidden flex flex-col w-full flex-1 h-full min-h-0 overflow-hidden">
+
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 shrink-0">
+        <div class="flex flex-col gap-2 w-full">
+          <span class="text-sm text-gray-600">Filter by Category</span>
+          <div class="flex flex-wrap gap-2" id="announcement-filters">
+          </div>
+        </div>
+        <button onclick="alert('Create Announcement Modal would open here')" class="shrink-0 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition-colors">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          Create Announcement
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto pr-2 -mr-2" id="announcements-list">
+        <p class="text-gray-400 text-sm">Loading announcements...</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+  // Initial Lucide Icon Load
+  lucide.createIcons();
+
+  function showSection(sectionId) {
+    // 1. Hide all content sections
+    document.querySelectorAll('.view-section').forEach(el => {
+      el.classList.add('section-hidden');
+    });
+
+    // 2. Remove 'active' styles from all nav items
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.className = "nav-item w-full flex items-center px-3 py-2.5 text-slate-300 rounded-lg hover:bg-slate-700 hover:text-white transition-colors group";
+      // Reset icon color
+      const icon = el.querySelector('i');
+      if(icon) {
+        icon.classList.remove('text-white'); // simplistic reset
+        icon.classList.add('text-slate-400');
+      }
+    });
+
+    // 3. Define Logic Variables
+    let targetSectionId = '';
+    let targetNavId = '';
+    let pageTitle = '';
+
+    if (sectionId === 'announcements') {
+      targetSectionId = 'section-announcements';
+      targetNavId = 'nav-announcements';
+      pageTitle = 'Announcements';
+    } else if (sectionId === 'calendar' || sectionId === 'home') {
+      // Defaulting Home to Calendar for now
+      targetSectionId = 'section-calendar';
+      targetNavId = 'nav-calendar';
+      pageTitle = 'Calendar';
+    }
+
+    // 4. Show the selected section
+    document.getElementById(targetSectionId).classList.remove('section-hidden');
+
+    // 5. Add 'Active' styles to the clicked sidebar link
+    const activeNav = document.getElementById(targetNavId);
+    if(activeNav) {
+      activeNav.className = "nav-item w-full flex items-center px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md shadow-blue-900/20 group";
+      // Ensure icon is white
+      const activeIcon = activeNav.querySelector('i');
+      if(activeIcon) {
+        activeIcon.classList.remove('text-slate-400');
+        // No need to add text-white explicitly if parent has text-white, but good for safety
+      }
+    }
+
+    // 6. Update Header Text and Breadcrumbs
+    document.getElementById('page-header-title').innerText = pageTitle;
+    document.getElementById('breadcrumb-current').innerText = pageTitle;
+  }
+</script>
+
+</body>
+</html>
